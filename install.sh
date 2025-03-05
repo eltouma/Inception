@@ -8,7 +8,6 @@ reset='\e[0m'
 
 # Exit when any command fails
 # set -ex
-# set -d
 set +x
 
 # Keep track of the last executed command
@@ -93,7 +92,7 @@ fi
 
 # Install SSH
 if ! which openssh-server &>/dev/null; then
-	echo -e "\n${blue}Installing ssh${reset}"
+	echo -e "\n${blue}Installing SSH${reset}"
 	sudo apt-get install openssh-server
 	echo -e "${green}Success:${reset} SSH is installed"
 else
@@ -101,6 +100,21 @@ else
 fi
 
 systemctl status ssh --no-pager
+
+: <<'END_COMMENT'
+# Install ufw
+if ! which ufw &>/dev/null; then
+	echo -e "\n${blue}Installing ufw${reset}"
+	sudo apt-get install ufw
+	yes | ufw enable
+	echo -e "${green}Success:${reset} ufw is installed"
+else
+	echo -e "ufw is already installed"
+fi
+
+# List all available applications with ufw 
+sudo ufw app list
+END_COMMENT
 
 : <<'END_COMMENT'
 apt-get remove sudo
