@@ -1,2 +1,2 @@
 .env
-.dockerignore
+/srcs/requirement/mariadb/.dockerignore
