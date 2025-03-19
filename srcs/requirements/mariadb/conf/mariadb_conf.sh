@@ -14,7 +14,7 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 	chmod 755 /var/lib/mysql /run/mysqld
 
 	# Init database
-	mysql_install_db --user=mysql --datadir=/var/lib/mysql
+	mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 
 	# Check if db is safe
 	tfile=`mktemp`
