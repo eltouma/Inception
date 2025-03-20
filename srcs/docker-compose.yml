@@ -1,0 +1,11 @@
+services:
+  mariadb:
+    image: mariadb
+    ports:
+      - 3306:3306
+
+    volumes:
+
+  networks:
+    inception:
+      name: inception
