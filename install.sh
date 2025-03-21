@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/ash
 
 # Colors
 green='\e[32m'

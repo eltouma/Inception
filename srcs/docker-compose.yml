@@ -2,10 +2,10 @@ services:
   mariadb:
     image: mariadb
     ports:
-      - 3306:3306
-
+      - "3306:3306"
     volumes:
+      - "mariadb-data:/var/lib/mysql"
 
-  networks:
-    inception:
-      name: inception
+networks:
+  inception:
+    name: inception
