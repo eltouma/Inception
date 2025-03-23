@@ -6,8 +6,13 @@ FROM	alpine:3.20@sha256:de4fe7064d8f98419ea6b49190df1abbf43450c1702eeb864fe9ced4
 
 # Install the application dependencies
 RUN	apk add --no-cache nginx \
-	&& apk add openssl \
-	&& mkdir -p /etc/nginx/ssl
+	&& mkdir -p /var/log/nginx
+#	&& adduser -D -g 'www' www \
+#	&& mkdir -p /www \
+#	&& chown -R www:www /var/lib/nginx /www 
+#	&& apk add openssl \
+#	&& mkdir -p /etc/nginx/ssl
+
 #
 #	&& mkdir -p /run/mysqld /var/lib/mysql \
 #	&& chown -R mysql:mysql /run/mysqld /var/lib/mysql \
@@ -17,16 +22,17 @@ RUN	apk add --no-cache nginx \
 #		echo 'bind-address=0.0.0.0'; \
 #	} | tee /etc/my.cnf.d/docker.cnf; \
 #	sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf
+
 # Copy files from the host and put them into the container image
-# COPY	--chmod=755 ./conf/nginx_conf.sh . 
+COPY	--chmod=644 ./conf/nginx.conf /etc/nginx/nginx.conf
+# COPY	--chmod=755 ./conf/nginx_conf.sh .
 
 # Sets configuration on the image that indicates a port the image would like to expose
 EXPOSE	443
 
 # Allows you to configure a container that will run as an executable
-# ENTRYPOINT ["./nginx_conf.sh"]
+# ENTRYPOINT ["./nginx.conf"]
 
 # Sets the default command a container using this image will run
-CMD ["nginx"]
+CMD ["nginx", "-g", "daemon off;"]
 
-# HEALTHCHECK
