@@ -3,20 +3,18 @@ services:
     build:
         context: requirements/mariadb
     container_name: mariadb
-    image: mariadb
+    image: mariadb:mariadb
     pull_policy: never
     ports:
       - 3306:3306
     networks:
       - inception
-#   volumes:
-#     - "mariadb-data:/var/lib/mysql"
 
   nginx:
     build:
         context: requirements/nginx
     container_name: nginx
-    image: nginx
+    image: nginx:nginx
     pull_policy: never
     ports:
       #- 443:443

@@ -5,8 +5,8 @@
 FROM	alpine:3.20@sha256:de4fe7064d8f98419ea6b49190df1abbf43450c1702eeb864fe9ced453c1cc5f
 
 # Install the application dependencies
-RUN	apk add --no-cache nginx \
-	&& mkdir -p /var/log/nginx
+RUN	apk add --no-cache nginx
+# 	&& mkdir -p /var/log/nginx
 #	&& adduser -D -g 'www' www \
 #	&& mkdir -p /www \
 #	&& chown -R www:www /var/lib/nginx /www 
