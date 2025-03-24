@@ -6,22 +6,6 @@ FROM	alpine:3.20@sha256:de4fe7064d8f98419ea6b49190df1abbf43450c1702eeb864fe9ced4
 
 # Install the application dependencies
 RUN	apk add --no-cache nginx
-# 	&& mkdir -p /var/log/nginx
-#	&& adduser -D -g 'www' www \
-#	&& mkdir -p /www \
-#	&& chown -R www:www /var/lib/nginx /www 
-#	&& apk add openssl \
-#	&& mkdir -p /etc/nginx/ssl
-
-#
-#	&& mkdir -p /run/mysqld /var/lib/mysql \
-#	&& chown -R mysql:mysql /run/mysqld /var/lib/mysql \
-#	&& {	echo '[mysqld]'; \
-#		echo 'skip-host-cache'; \
-#		echo 'skip-name-resolve'; \
-#		echo 'bind-address=0.0.0.0'; \
-#	} | tee /etc/my.cnf.d/docker.cnf; \
-#	sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf
 
 # Copy files from the host and put them into the container image
 COPY	--chmod=644 ./conf/nginx.conf /etc/nginx/nginx.conf
