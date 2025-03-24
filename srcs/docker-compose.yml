@@ -7,6 +7,8 @@ services:
     pull_policy: never
     ports:
       - 3306:3306
+    networks:
+      - inception
 #   volumes:
 #     - "mariadb-data:/var/lib/mysql"
 
@@ -17,7 +19,10 @@ services:
     image: nginx
     pull_policy: never
     ports:
-      - 443:443
+      #- 443:443
+      - 80:8080
+    networks:
+      - inception
 
 networks:
   inception:

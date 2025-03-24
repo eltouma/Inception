@@ -28,10 +28,8 @@ COPY	--chmod=644 ./conf/nginx.conf /etc/nginx/nginx.conf
 COPY	--chmod=644 ./conf/index.html /var/lib/nginx/html
 
 # Sets configuration on the image that indicates a port the image would like to expose
-# EXPOSE	443
+EXPOSE	443
 
-# Allows you to configure a container that will run as an executable
-# ENTRYPOINT ["./nginx.conf"]
 
 # Sets the default command a container using this image will run
 CMD ["nginx", "-g", "daemon off;"]
