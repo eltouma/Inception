@@ -19,9 +19,9 @@ wp core config --dbhost=mariadb:3306 --dbname=mariadb --dbuser=elsa --dbpass=sec
 wp user create elsauser elsa@test.com secretelsa useruser --allow-root
 
 END_COMMENT
-sed -i 's|listen = 127.0.0.1:9000|listen = 9000|' /etc/php8/php-fpm.d/www.conf \
+sed -i 's|listen = 127.0.0.1:9000|listen = 0.0.0.0|' /etc/php8/php-fpm.d/www.conf \
 
-sed -i '36 s@/run/php/php8.3-fpm.sock@9000@' /etc/php/8.3/fpm/pool.d/www.conf
+sed -i '36 s@/run/php/php8-fpm.sock@9000@' /etc/php/8/fpm/pool.d/www.conf
 # create a directory for php-fpm
 mkdir -p /run/php
 # start php-fpm service in the foreground to keep the container running

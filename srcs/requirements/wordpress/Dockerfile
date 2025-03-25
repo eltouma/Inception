@@ -9,39 +9,20 @@ ARG	PHP_VERSION=8.3 \
 	WP_ZIP=wordpress-6.6.2.zip \
 	WP_CLI=wp-cli-2.10.0.phar
 
-WORKDIR	/var/www
+WORKDIR	/var/www/wordpress
 	
 # Install the application dependencies
-RUN	apk add --no-cache php php-fpm \
- 	php-mysqli \
-    	php-json \
-#	php-curl \
-	php-dom \
-	php-mbstring \
-	php-openssl \
-	php-xml \
-	php-zip \
-	php-xdebug \
-#	php-exif \
-#	php-fileinfo \
-# 	php-redis \
-	php-cli \
-	php-phar \
-	php-tokenizer \
-	wget \
-	unzip \
-#	&& sed -i 's|listen = 127.0.0.1:9000|listen = 9000|' /etc/php8/php-fpm.d/www.conf \
-	&& rm -f /var/cache/apk/* \
-	&& wget https://${WP_ORG}/${WP_ZIP} \
-	&& unzip ${WP_ZIP} \
-	&& cp -rf wordpress/* . \
-	&& rm -rf ${WP_ZIP} \
-	&& wget https://github.com/wp-cli/wp-cli/releases/download/v2.10.0/${WP_CLI} \
-	&& chmod 755 ${WP_CLI} \
-	&& mv ${WP_CLI} /usr/local/bin/wp
+RUN     apk add --no-cache php-fpm \
+        php-mysqli \
+        php-openssl \
+        php-cli \
+        php-phar \
+	fcgi
+	# fcgi pour le healthcheck
 
 # Copy files from the host and put them into the container image
 COPY	--chmod=755 ./conf/wordpress_conf.sh . 
+COPY	--chmod=755 ./conf/www.conf /etc/php83/php-fpm.d/www.conf 
 
 # Sets configuration on the image that indicates a port the image would like to expose
 EXPOSE	9000
@@ -50,5 +31,4 @@ EXPOSE	9000
 ENTRYPOINT ["./wordpress_conf.sh"]
 
 # Sets the default command a container using this image will run
-#CMD ["mysqld_safe", "--basedir=/usr", "--datadir=/var/lib/mysql", "--user=mysql"]
-CMD ["/bin/ash", "-c", "/usr/sbin/php-fpm8 -F"]
+CMD ["/bin/ash", "-c", "/usr/sbin/php-fpm8", "-F"]
