@@ -31,4 +31,4 @@ EXPOSE	9000
 ENTRYPOINT ["./wordpress_conf.sh"]
 
 # Sets the default command a container using this image will run
-CMD ["/bin/ash", "-c", "/usr/sbin/php-fpm8", "-F"]
+CMD ["/bin/ash", "-c", "/usr/sbin/php-fpm83", "-F"]

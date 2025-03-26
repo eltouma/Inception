@@ -5,6 +5,9 @@ services:
         args:
           db_path: ${db_path}
           db_name: ${db_name}
+          wp_db_path: ${wp_db_path}
+          db_user: ${db_user}
+          wp_password: ${wp_password}
     container_name: mariadb
     image: mariadb:mariadb
     pull_policy: never
