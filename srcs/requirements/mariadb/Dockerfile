@@ -17,6 +17,7 @@ RUN	apk add --no-cache mariadb mariadb-client \
 
 # Copy files from the host and put them into the container image
 COPY	--chmod=755 ./conf/mariadb_conf.sh . 
+#COPY	--chmod=755 ./conf/mariadb_init.sh . 
 
 # Sets configuration on the image that indicates a port the image would like to expose
 EXPOSE	3306
