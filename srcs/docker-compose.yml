@@ -3,6 +3,7 @@ services:
     build:
         context: requirements/mariadb
         args:
+          db_path: ${db_path}
           db_name: ${db_name}
     container_name: mariadb
     image: mariadb:mariadb
