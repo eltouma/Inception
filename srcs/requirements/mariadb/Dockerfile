@@ -28,5 +28,5 @@ ENTRYPOINT ["./mariadb_init.sh"]
 # Sets the default command a container using this image will run
 CMD ["mysqld_safe", "--basedir=/usr", "--datadir=/var/lib/mysql", "--user=mysql"]
 
-#HEALTHCHECK	--interval=1m --timeout=10s --start-period=20s --retries=3 \
- #   		CMD mariadb -u root -e "SELECT 1" > /dev/null 2>&1 && break
+HEALTHCHECK	--interval=10s --timeout=10s --start-period=20s --retries=3 \
+    		CMD mariadb -u root -e "SELECT 1" > /dev/null 2>&1 && break
