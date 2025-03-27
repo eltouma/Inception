@@ -23,11 +23,11 @@ sleep 5
 #until mariadb -u root -e "SELECT 1" > /dev/null 2>&1; do
 #    sleep 1
 #done
-for i in $(seq 1 30); do
-    mariadb -u root -e "SELECT 1" > /dev/null 2>&1 && break
-    echo "Attente de MariaDB pour qu'il soit prêt..."
-    sleep 1
-done
+#for i in $(seq 1 30); do
+#    mariadb -u root -e "SELECT 1" > /dev/null 2>&1 && break
+#    echo "Attente de MariaDB pour qu'il soit prêt..."
+#    sleep 1
+#done
 
 mariadb -u root <<-EOSQL
     CREATE DATABASE IF NOT EXISTS coucou;
