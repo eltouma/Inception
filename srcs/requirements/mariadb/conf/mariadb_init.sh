@@ -31,6 +31,7 @@ done
 
 mariadb -u root <<-EOSQL
     CREATE DATABASE IF NOT EXISTS coucou;
+    CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;
 
     FLUSH PRIVILEGES;
 EOSQL
