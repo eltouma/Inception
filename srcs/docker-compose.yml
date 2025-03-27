@@ -3,12 +3,11 @@ services:
     build:
         context: requirements/mariadb
         args:
-          db_path: ${db_path}
-          db_name: ${DB_NAME}
-          wp_db_path: ${wp_db_path}
-          db_user: ${DB_USER}
-          wp_password: ${WP_PASSWORD}
-          db_password: ${DB_PASSWORD}
+          DB_PATH: ${DB_PATH}
+          DB_NAME: ${DB_NAME}
+          DB_USER: ${DB_USER}
+          WP_PASSWORD: ${WP_PASSWORD}
+          DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     container_name: mariadb
     image: mariadb:mariadb
     pull_policy: never

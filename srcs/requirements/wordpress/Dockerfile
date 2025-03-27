@@ -4,12 +4,12 @@
 # By pinning your images to a digest, you're guaranteed to always use the same image version, even if a publisher replaces the tag with a new image
 FROM	alpine:3.20@sha256:de4fe7064d8f98419ea6b49190df1abbf43450c1702eeb864fe9ced453c1cc5f
 
-ARG	PHP_VERSION=8.3 \
-	WP_ORG=wordpress.org \
-	WP_ZIP=wordpress-6.6.2.zip \
-	WP_CLI=wp-cli-2.10.0.phar
-
-WORKDIR	/var/www/wordpress
+#ARG	PHP_VERSION=8.3 \
+#	WP_ORG=wordpress.org \
+#	WP_ZIP=wordpress-6.6.2.zip \
+#	WP_CLI=wp-cli-2.10.0.phar
+#
+#WORKDIR	/var/www/wordpress
 	
 # Install the application dependencies
 RUN     apk add --no-cache php-fpm \
