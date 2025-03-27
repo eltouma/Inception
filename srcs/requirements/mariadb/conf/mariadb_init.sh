@@ -4,6 +4,7 @@ green='\e[92m'
 red='\e[91m'
 yellow='\e[93m'
 blue='\e[94m'
+magenta='\e[95m'
 reset='\e[0m'
 
 set	-ex
@@ -14,8 +15,8 @@ if [ -f .env ]; then
 	set +a
 fi
 
+echo -e "${green}Mariadb initialization${reset}"
 ./mariadb_conf.sh
-echo -e "${green}Mariadb initialized${reset}"
 
 if [ ! -d "${DB_PATH}" ]; then
 	mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
@@ -39,4 +40,5 @@ echo -e "${green}Mariadb is ready!${reset}"
 
 mysqladmin shutdown -u root --password="secret"
 echo -e "${yellow}Shutdown temporary mariadb server${reset}"
+echo -e "${magenta}Exec command mariadb container will run${reset}"
 exec "$@"
