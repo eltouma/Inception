@@ -35,13 +35,20 @@ services:
   wordpress:
     build:
         context: requirements/wordpress
+        args:
+          DB_NAME: ${DB_NAME}
+          DB_USER: ${DB_USER}
+          WP_PASSWORD: ${WP_PASSWORD}
+          DB_HOST: ${DB_HOST}
     container_name: wordpress
     image: wordpress:wordpress
     pull_policy: never
     env_file:
       - .env
-    ports:
-      - 9000:9000
+  #  ports:
+   #   - 9000:9000
+    depends_on:
+      - mariadb
     networks:
       - inception
 

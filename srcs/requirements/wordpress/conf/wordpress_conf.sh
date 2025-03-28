@@ -1,30 +1,34 @@
 #!/bin/ash
 
-echo "coucou"
+#green='\e[92m'
+#red='\e[91m'
+#yellow='\e[93m'
+#blue='\e[94m'
+#cian='\e[96m'
+#magenta='\e[95m'
+#reset='\e[0m'
 
-cd /var/www/
-echo "coucou1"
-chmod -R 755 wordpress
-ls -lR /var/www/wordpress
-chown -R www-data:www-data wordpress
+set	-ex
 
-<<  END_COMMENT
-wp core download --allow-root
+if [ -f .env ]; then
+	set -a
+	source ../../.env
+	set +a
+fi
 
-wp config create --allow-root
+#mkdir -p /var/www/wordpress
+#cd /var/www/wordpress
+#chmod -R 755  /var/www/wordpress
 
-wp core install --url=elsa.42.fr --title=inception --admin_user=elsa_admin --admin_password=secret --admin_email=test@test.com --allow-root
-
-wp core config --dbhost=mariadb:3306 --dbname=mariadb --dbuser=elsa --dbpass=secret --allow-root
-wp user create elsauser elsa@test.com secretelsa useruser --allow-root
-
-END_COMMENT
-sed -i 's|listen = 127.0.0.1:9000|listen = 0.0.0.0|' /etc/php83/php-fpm.d/www.conf \
-
-#sed -i '36 s@/run/php/php8-fpm.sock@9000@' /etc/php/8/fpm/pool.d/www.conf
-# create a directory for php-fpm
-mkdir -p /run/php
-# start php-fpm service in the foreground to keep the container running
-/usr/sbin/php-fpm83 -F
-
-exec "$@"
+if [ ! -f wp-cli.phar ]; then
+	#wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O /usr/local/bin/wp 
+	#chmod +x /usr/local/bin/wp
+	# wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O /var/www/wordpress
+	wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+	# chmod 777 wp-cli.phar
+	mv wp-cli.phar /usr/local/bin/wp
+	chmod +x /usr/local/bin/wp
+#	echo -e "${cian}wp-cli.phar downloaded${reset}"
+#else
+#	echo -e "${cian}wp-cli.phar DEJA LA${reset}"
+fi

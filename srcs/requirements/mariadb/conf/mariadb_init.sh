@@ -28,17 +28,18 @@ mysqld --user=mysql --datadir=/var/lib/mysql &
 sleep 5
 
 mariadb -u root <<-EOSQL
-    CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;
-    CREATE USER IF NOT EXISTS \`${DB_USER}\`@'%' IDENTIFIED BY '${WP_PASSWORD}';
-    GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO \`${DB_USER}\`@'%' IDENTIFIED BY '${WP_PASSWORD}';
-    FLUSH PRIVILEGES;
+	DELETE FROM mysql.user WHERE User='';
+	CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;
+	CREATE USER IF NOT EXISTS \`${DB_USER}\`@'%' IDENTIFIED BY '${DB_PASSWORD}';
+	GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO \`${DB_USER}\`@'%'; 
+	FLUSH PRIVILEGES;
 EOSQL
 
 echo -e "${blue}${DB_NAME} created${reset}"
 echo -e "${blue}${DB_USER} created${reset}"
 echo -e "${green}Mariadb is ready!${reset}"
 
-mysqladmin shutdown -u root --password="secret"
+mysqladmin shutdown -u root --password="${DB_ROOT_PASSWORD}"
 echo -e "${yellow}Shutdown temporary mariadb server${reset}"
 echo -e "${magenta}Exec command mariadb container will run${reset}"
 exec "$@"
