@@ -20,6 +20,7 @@ RUN     apk add --no-cache ${PHP_VERSION}-fpm \
 
 # Copy files from the host and put them into the container image
 #COPY	--chmod=755 ./conf/wordpress_init.sh /wordpress_init.sh
+COPY	--chmod=755 ./conf/wordpress_conf.sh .
 COPY	--chmod=755 ./conf/wordpress_init.sh /
 
 # Sets configuration on the image that indicates a port the image would like to expose

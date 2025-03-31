@@ -7,13 +7,16 @@ blue='\e[94m'
 magenta='\e[95m'
 reset='\e[0m'
 
+# a supprimer apres
 set	-ex
 
+: <<'END_COMMENT'
 if [ -f .env ]; then
 	set -a
 	source ../../.env
 	set +a
 fi
+END_COMMENT
 
 echo -e "${green}Mariadb initialization${reset}"
 ./mariadb_conf.sh

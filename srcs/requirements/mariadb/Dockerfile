@@ -24,6 +24,8 @@ ENTRYPOINT ["./mariadb_init.sh"]
 # Sets the default command a container using this image will run
 CMD ["mysqld_safe", "--basedir=/usr", "--datadir=/var/lib/mysql", "--user=mysql"]
 
+STOPSIGNAL SIGINT
+
 HEALTHCHECK	--interval=10s --timeout=1s --start-period=10s --retries=3  \
     CMD mysqladmin -u$DB_USER -p$DB_ROOT_PASSWORD ping 2>&1 | grep -qE "mysqld is alive"; \
     if [ $? -eq 0 ]; then exit 0; else exit 1; fi
