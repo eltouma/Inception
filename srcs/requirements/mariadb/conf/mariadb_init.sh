@@ -24,7 +24,7 @@ if [ ! -d "${DB_PATH}" ]; then
 fi
 
 echo -e "${yellow}Launch temporary mariadb server${reset}"
-mysqld --user=mysql --datadir=/var/lib/mysql & 
+mysqld --user=mysql --datadir=/var/lib/mysql  &
 sleep 5
 
 mariadb -u root <<-EOSQL

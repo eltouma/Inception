@@ -4,30 +4,22 @@
 # By pinning your images to a digest, you're guaranteed to always use the same image version, even if a publisher replaces the tag with a new image
 FROM	alpine:3.20@sha256:de4fe7064d8f98419ea6b49190df1abbf43450c1702eeb864fe9ced453c1cc5f
 
-#ARG	PHP_VERSION=8.3 \
-#	WP_ORG=wordpress.org \
-#	WP_ZIP=wordpress-6.6.2.zip \
-#	WP_CLI=wp-cli-2.10.0.phar
-#
+ARG	PHP_VERSION=php83 
 
 WORKDIR	/var/www/wordpress
 	
 # Install the application dependencies
-RUN     apk add --no-cache php83-fpm \
-        php83-mysqli \
-    #    php83-openssl \
-        php83-cli \
-        php83-phar \
-        php83-iconv \
+RUN     apk add --no-cache ${PHP_VERSION}-fpm \
+        ${PHP_VERSION}-mysqli \
+        ${PHP_VERSION}-cli \
+        ${PHP_VERSION}-phar \
+        ${PHP_VERSION}-iconv \
 	wget \
 	mariadb-client \
 	fcgi
-	# fcgi pour le healthcheck
 
 # Copy files from the host and put them into the container image
-# COPY	--chmod=755 ./conf/wordpress_conf.sh . 
 COPY	--chmod=755 ./conf/wordpress_init.sh .
-#COPY	--chmod=755 ./conf/www.conf /etc/php83/php-fpm.d/www.conf 
 
 # Sets configuration on the image that indicates a port the image would like to expose
 EXPOSE	9000
@@ -36,9 +28,7 @@ EXPOSE	9000
 ENTRYPOINT ["./wordpress_init.sh"]
 
 # Sets the default command a container using this image will run
-#CMD ["/bin/ash", "-c", "/usr/sbin/php-fpm83", "-F"]
 CMD ["php-fpm83", "-F"]
 
-HEALTHCHECK --interval=10s --timeout=1s --retries=3 --start-period=20s \
-    # CMD cgi-fcgi -bind -connect 127.0.0.1:9000 ping | grep -q pong; if [ $? -eq 0 ]; then exit 0; else exit 1; fi
+HEALTHCHECK --interval=10s --timeout=1s --start-period=20s --retries=3 \
     CMD cgi-fcgi -bind -connect 127.0.0.1:9000; if [ $? -eq 0 ]; then exit 0; else exit 1; fi

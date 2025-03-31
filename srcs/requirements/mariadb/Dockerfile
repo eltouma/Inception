@@ -31,4 +31,5 @@ ENTRYPOINT ["./mariadb_init.sh"]
 CMD ["mysqld_safe", "--basedir=/usr", "--datadir=/var/lib/mysql", "--user=mysql"]
 
 HEALTHCHECK	--interval=10s --timeout=10s --start-period=10s --retries=3  \
-    		CMD mariadb -u root -e "SELECT 1" > /dev/null 2>&1 && break
+    CMD mysqladmin -u$DB_USER -p$DB_ROOT_PASSWORD ping 2>&1 | grep -qE "mysqld is alive"; if [ $? -eq 0 ]; then exit 0; else exit 1; fi
+#    		CMD mariadb -u root -e "SELECT 1" > /dev/null 2>&1 && break
