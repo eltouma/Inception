@@ -30,5 +30,5 @@ ENTRYPOINT ["./wordpress_init.sh"]
 # Sets the default command a container using this image will run
 CMD ["php-fpm83", "-F"]
 
-HEALTHCHECK --interval=10s --timeout=1s --start-period=20s --retries=3 \
+HEALTHCHECK --interval=10s --timeout=1s --start-period=10s --retries=3 \
     CMD cgi-fcgi -bind -connect 127.0.0.1:9000; if [ $? -eq 0 ]; then exit 0; else exit 1; fi

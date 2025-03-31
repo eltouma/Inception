@@ -10,9 +10,15 @@ RUN	apk add --no-cache nginx
 # Copy files from the host and put them into the container image
 COPY	--chmod=644 ./conf/nginx.conf /etc/nginx/nginx.conf
 COPY	--chmod=644 ./conf/index.html /var/lib/nginx/html
+COPY	--chmod=644 ../secrets/inception.crt ./etc/nginx/inception.crt
+COPY	--chmod=644 ../secrets/inception.key ./etc/nginx/inception.key
 
 # Sets configuration on the image that indicates a port the image would like to expose
 EXPOSE	443
 
 # Sets the default command a container using this image will run
 CMD ["nginx", "-g", "daemon off;"]
+
+HEALTHCHECK --interval=3s --timeout=1s --start-period=5s --retries=3 \
+    CMD wget -q --tries=1 --spider --no-check-certificate https://127.0.0.1:443/health; \
+    if [ $? -eq 0 ]; then exit 0; else exit 1; fi

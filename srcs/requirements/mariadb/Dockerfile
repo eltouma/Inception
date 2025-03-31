@@ -8,12 +8,6 @@ FROM	alpine:3.20@sha256:de4fe7064d8f98419ea6b49190df1abbf43450c1702eeb864fe9ced4
 RUN	apk add --no-cache mariadb mariadb-client \
 	&& mkdir -p /run/mysqld /var/lib/mysql \
 	&& chown -R mysql:mysql /run/mysqld /var/lib/mysql \
-#	&& {	echo '[mysqld]'; \
-#		echo 'skip-host-cache'; \
-#		echo 'skip-name-resolve'; \
-#	#	echo 'bind-address=0.0.0.0'; \
-	#} | tee /etc/my.cnf.d/docker.cnf; \
-#	} | tee /etc/my.cnf.d/mariadb-server.cnf; \
 	&& sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf \
 	&& sed -i "s|#bind-address=0.0.0.0|bind-address=0.0.0.0|g" /etc/my.cnf.d/mariadb-server.cnf
 
@@ -30,6 +24,6 @@ ENTRYPOINT ["./mariadb_init.sh"]
 # Sets the default command a container using this image will run
 CMD ["mysqld_safe", "--basedir=/usr", "--datadir=/var/lib/mysql", "--user=mysql"]
 
-HEALTHCHECK	--interval=10s --timeout=10s --start-period=10s --retries=3  \
-    CMD mysqladmin -u$DB_USER -p$DB_ROOT_PASSWORD ping 2>&1 | grep -qE "mysqld is alive"; if [ $? -eq 0 ]; then exit 0; else exit 1; fi
-#    		CMD mariadb -u root -e "SELECT 1" > /dev/null 2>&1 && break
+HEALTHCHECK	--interval=10s --timeout=1s --start-period=10s --retries=3  \
+    CMD mysqladmin -u$DB_USER -p$DB_ROOT_PASSWORD ping 2>&1 | grep -qE "mysqld is alive"; \
+    if [ $? -eq 0 ]; then exit 0; else exit 1; fi
