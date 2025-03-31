@@ -13,8 +13,8 @@ services:
     pull_policy: never
     env_file:
       - .env
-    ports:
-      - 3306:3306
+ #   expose:
+  #    - 3306:3306
     networks:
       - inception
 
@@ -29,10 +29,16 @@ services:
     ports:
       #- 443:443
       - 80:8080
+    depends_on:
+#      mariadb:
+ #       condition: service_healthy
+      wordpress:
+        condition: service_healthy
     networks:
       - inception
 
   wordpress:
+    hostname: wordpress
     build:
         context: requirements/wordpress
         args:
@@ -45,10 +51,11 @@ services:
     pull_policy: never
     env_file:
       - .env
-  #  ports:
-   #   - 9000:9000
+    ports:
+      - 9000:9000
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     networks:
       - inception
 

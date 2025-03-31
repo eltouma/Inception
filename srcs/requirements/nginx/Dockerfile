@@ -14,7 +14,5 @@ COPY	--chmod=644 ./conf/index.html /var/lib/nginx/html
 # Sets configuration on the image that indicates a port the image would like to expose
 EXPOSE	443
 
-
 # Sets the default command a container using this image will run
 CMD ["nginx", "-g", "daemon off;"]
-

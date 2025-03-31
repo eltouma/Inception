@@ -28,6 +28,7 @@ red='\e[91m'
 yellow='\e[93m'
 blue='\e[94m'
 magenta='\e[95m'
+cian='\e[96m'
 reset='\e[0m'
 
 set	-ex
@@ -38,48 +39,51 @@ if [ -f .env ]; then
 	set +a
 fi
 
+echo "${red}Current directory: $(pwd)${reset}"
 #echo -e "${magenta}wp-cli.phar installation${reset}"
 #./wordpress_conf.sh
 if [ ! -f wp-cli.phar ]; then
         wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
         chmod 777 wp-cli.phar
-        echo -e "${cian}wp-cli.phar downloaded${reset}"
+	echo -e "${cian}wp-cli.phar downloaded ici $(pwd)${reset}"
 else
         echo -e "${cian}wp-cli.phar DEJA LA${reset}"
 fi
 
-echo "Current directory: $(pwd)"
-echo "\n\n"
+echo -e "${magenta}Current directory: $(pwd)${reset}"
+echo -e "\n\n"
 ls -l wp-cli.phar
-echo "\n\n"
-echo "\n\n"
+echo -e "\n\n"
+echo -e "\n\n"
 which php83
-echo "\n\n"
+echo -e "\n\n"
 
 #mkdir -p /var/www/wordpress
 #cd /var/www/wordpress
 #chmod -R 755  /var/www/wordpress
-echo "Tentative de création de la configuration avec :"
-echo "DB_NAME: $DB_NAME"
-echo "DB_USER: $DB_USER"
-echo "DB_HOST: $DB_HOST"
+echo -e "Tentative de création de la configuration avec :"
+echo -e "DB_NAME: $DB_NAME"
+echo -e "DB_USER: $DB_USER"
+echo -e "DB_HOST: $DB_HOST"
 
 #if  ! php83 /var/www/wordpress/wp-cli.phar core is-installed ; then
 if [ ! -f "/var/www/wp-config.php" ]; then
 	echo -e "${red}wp-cli.phar installation${reset}"
 	php83 wp-cli.phar core download --version="6.6.2"
 
-php83 wp-cli.phar config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --dbhost=mariadb:3306 --allow-root
+php83 wp-cli.phar config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_ROOT_PASSWORD --dbhost=mariadb:3306 --path='/var/www/wordpress' --allow-root
 
-php83 wp-cli.phar core install --url=localhost --title=inception --admin_user=elsa_admin --admin_password=secret4 --admin_email=test@test.com 
+#php83 wp-cli.phar db create
+
+php83 wp-cli.phar core install --url=localhost --title=inception --admin_user=$DB_USER --admin_password=$DB_ROOT_PASSWORD --admin_email=test@test.com --path='/var/www/wordpress' --allow-root
 
 #php83 wp-cli.phar core config --dbhost=mariadb:3306 --dbname=mariadb --dbuser=elsa --dbpass=secret 
 #php83 wp-cli.phar user create --role=autor elsauser elsa@test.com secretelsa useruser 
 chown -R nobody:nobody /var/www/wordpress
 fi
 
-#sed -i -E "s/^listen = 127.0.0.1/listen = 0.0.0.0/" /etc/php83/php-fpm.d/www.conf
-#sed -i -E "s/;ping.path/ping.path/" /etc/php83/php-fpm.d/www.conf
+sed -i -E "s/;listen = 127.0.0.1/listen = 0.0.0.0/" /etc/php83/php-fpm.d/www.conf
+# sed -i -E "s/;ping.path/ping.path/" /etc/php83/php-fpm.d/www.conf
 #sed -i -E "s/;ping.response/ping.response/" /etc/php83/php-fpm.d/www.conf
 
 : <<'END_COMMENT'
