@@ -8,13 +8,14 @@ magenta='\e[95m'
 cian='\e[96m'
 reset='\e[0m'
 
-set	-ex
+#set	-ex
 
 if [ -f .env ]; then
 	set -a
 	source ../../.env
 	set +a
 fi
+
 
 echo "${red}Current directory: $(pwd)${reset}"
 #echo -e "${magenta}wp-cli.phar installation${reset}"
@@ -48,14 +49,19 @@ if [ ! -f "/var/www/wp-config.php" ]; then
 	echo -e "${red}wp-cli.phar installation${reset}"
 	php83 wp-cli.phar core download --version="6.6.2"
 
+	echo -e "${red}config creation${reset}"
 php83 wp-cli.phar config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_ROOT_PASSWORD --dbhost=mariadb:3306 --path='/var/www/wordpress' --allow-root
+#php83 wp-cli.phar config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_ROOT_PASSWORD --dbhost=mariadb:3306  --allow-root
 
+	echo -e "${red}config created${reset}"
 #php83 wp-cli.phar db create
 
+	echo -e "${red}config installation${reset}"
 php83 wp-cli.phar core install --url=localhost --title=inception --admin_user=$DB_USER --admin_password=$DB_ROOT_PASSWORD --admin_email=test@test.com --path='/var/www/wordpress' --allow-root
 
+	echo -e "${red}config installed${reset}"
 #php83 wp-cli.phar core config --dbhost=mariadb:3306 --dbname=mariadb --dbuser=elsa --dbpass=secret 
-#php83 wp-cli.phar user create --role=autor elsauser elsa@test.com secretelsa useruser 
+php83 wp-cli.phar user create --role=author elsauser elsa@test.com --user_pass=$WP_PASSWORD
 chown -R nobody:nobody /var/www/wordpress
 fi
 
