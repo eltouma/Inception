@@ -8,7 +8,7 @@ FROM	alpine:3.20@sha256:de4fe7064d8f98419ea6b49190df1abbf43450c1702eeb864fe9ced4
 RUN	apk add --no-cache nginx
 
 # Copy files from the host and put them into the container image
-COPY	--chmod=644 ./conf/nginx.conf /etc/nginx/http.d
+COPY	--chmod=644 ./conf/nginx.conf /etc/nginx/http.d/
 #COPY	--chmod=644 ./conf/index.html /var/lib/nginx/html
 COPY	--chmod=644 ../secrets/inception.crt ./etc/nginx/inception.crt
 COPY	--chmod=644 ../secrets/inception.key ./etc/nginx/inception.key

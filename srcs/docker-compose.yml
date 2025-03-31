@@ -16,9 +16,9 @@ services:
       - .env
     volumes:
       - mariadb:/var/lib/mysql
-      #- /home/${LOGIN}/data/mariadb:/var/lib/mysql
     networks:
       - inception
+    restart: unless-stopped
 
   nginx:
     build:
@@ -37,9 +37,9 @@ services:
         condition: service_healthy
     volumes:
       - wordpress:/var/www/wordpress
-      # - /home/${LOGIN}/data/wordpress:/var/www/wordpress
     networks:
       - inception
+    restart: unless-stopped
 
   wordpress:
     hostname: wordpress
@@ -50,6 +50,8 @@ services:
           DB_USER: ${DB_USER}
           WP_PASSWORD: ${WP_PASSWORD}
           DB_HOST: ${DB_HOST}
+          DOMAIN_NAME: ${DOMAIN_NAME}
+          DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     container_name: wordpress
     image: wordpress:wordpress
     pull_policy: never
@@ -62,9 +64,9 @@ services:
         condition: service_healthy
     volumes:
       - wordpress:/var/www/wordpress
-      #- /home/${LOGIN}/data/wordpress:/var/www/wordpress
     networks:
       - inception
+    restart: unless-stopped
 
 volumes:
   mariadb:
@@ -79,26 +81,6 @@ volumes:
       type: none
       o: bind
       device: /home/${LOGIN}/data/wordpress
-
- # mariadb_vol:
-  #  name: mariadb_vol
-#    driver: local
-
-#volumes:
-#  mariadb_vol:
-#    name: mariadb_vol
-#    driver: local
-#    driver_opts:
-#      device: /home/${LOGIN}/data/mariadb
-#      o : bind
-#      type : none
-#  wordpress_vol:
-#    name: wordpress_vol
-#    driver: local
-#    driver_opts:
-#      device: /home/${LOGIN}/data/wordpress
-#      o : bind
-#      type : none
 
 networks:
   inception:
