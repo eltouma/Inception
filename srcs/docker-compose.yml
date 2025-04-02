@@ -6,9 +6,10 @@ services:
         args:
           DB_PATH: ${DB_PATH}
           DB_NAME: ${DB_NAME}
+          USER: ${USER}
           ROOT_USER: ${ROOT_USER}
-          DB_PASSWORD: ${DB_PASSWORD}
-          DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+          USER_PASSWORD: ${USER_PASSWORD}
+          ROOT_PASSWORD: ${ROOT_PASSWORD}
     container_name: mariadb
     image: mariadb:mariadb
     pull_policy: never
@@ -50,10 +51,10 @@ services:
           ROOT_USER: ${ROOT_USER}
           USER: ${USER}
           USER_MAIL: ${USER_MAIL}
-          WP_PASSWORD: ${WP_PASSWORD}
           DB_HOST: ${DB_HOST}
           DOMAIN_NAME: ${DOMAIN_NAME}
-          DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+          USER_PASSWORD: ${USER_PASSWORD}
+          ROOT_PASSWORD: ${ROOT_PASSWORD}
     container_name: wordpress
     image: wordpress:wordpress
     pull_policy: never
@@ -74,13 +75,13 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/${LOGIN}/data/mariadb
+      device: /home/eltouma/data/mariadb
   wordpress:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/${LOGIN}/data/wordpress
+      device: /home/eltouma/data/wordpress
 
 networks:
   inception:

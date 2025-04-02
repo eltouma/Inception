@@ -4,9 +4,9 @@ BLUE := \e[94m
 RESET := \e[0m
 
 NAME = inception
-DATA_PATH = /home/eltouma/
-WP_DATA = ${DATA_PATH}/data/wordpress
-MARIABD_DATA = ${DATA_PATH}/data/mariadb
+DATA_PATH = /home/eltouma
+WP_DATA = $(DATA_PATH)/data/wordpress
+MARIABD_DATA = $(DATA_PATH)/data/mariadb
 
 all:
 	@echo -e "$(GRAY)Copying ../.env into /srcs$(RESET)"
@@ -21,15 +21,30 @@ all:
 	docker compose -f ./srcs/docker-compose.yml up --build
 
 clean: 
+	@docker images
+	@echo ""
+	@docker ps -a
+	@echo ""
+	@docker volume ls
+	@echo ""
+	@docker network ls
+	@echo ""
 	@docker stop $$(docker ps -qa)
 	@docker rm $$(docker ps -qa)
 	@docker rmi -f $$(docker images -qa)
-	@docker volume rm $$(docker volume ls -q)
+	@docker volume rm srcs_mariadb srcs_wordpress
 	@docker network rm inception
 	@rm -rf ./srcs/.env ./srcs/requirements/nginx/secrets $(DATA_PATH)
 	@echo -e "$(BLUE)srcs/.env$(RESET) removed: $(GREEN) Success$(RESET)"
 	@echo -e "$(BLUE)srcs/requirements/nginx/secrets$(RESET) removed: $(GREEN) Success$(RESET)"
 	@echo -e "$(BLUE)Repositories for persistent data$(RESET) removed: $(GREEN)Success$(RESET)\n"
+	@docker images
+	@echo ""
+	@docker ps -a
+	@echo ""
+	@docker volume ls
+	@echo ""
+	@docker network ls
 
 down:
 	@docker compose -f ./srcs/docker-compose.yml stop
