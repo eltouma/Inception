@@ -26,7 +26,7 @@ clean:
 	@docker rmi -f $$(docker images -qa)
 	@docker volume rm $$(docker volume ls -q)
 	@docker network rm inception
-	@rm -rf /srcs/.env /srcs/requirements/nginx/secrets $(DATA_PATH)
+	@rm -rf ./srcs/.env ./srcs/requirements/nginx/secrets $(DATA_PATH)
 	@echo -e "$(BLUE)srcs/.env$(RESET) removed: $(GREEN) Success$(RESET)"
 	@echo -e "$(BLUE)srcs/requirements/nginx/secrets$(RESET) removed: $(GREEN) Success$(RESET)"
 	@echo -e "$(BLUE)Repositories for persistent data$(RESET) removed: $(GREEN)Success$(RESET)\n"

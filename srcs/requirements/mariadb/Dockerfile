@@ -12,14 +12,14 @@ RUN	apk add --no-cache mariadb mariadb-client \
 	&& sed -i "s|#bind-address=0.0.0.0|bind-address=0.0.0.0|g" /etc/my.cnf.d/mariadb-server.cnf
 
 # Copy files from the host and put them into the container image
-COPY	--chmod=755 ./conf/mariadb_conf.sh . 
-COPY	--chmod=755 ./conf/mariadb_init.sh .
+COPY	--chmod=755 ./conf/mariadb_install.sh . 
+COPY	--chmod=755 ./conf/mariadb_conf.sh .
 
 # Sets configuration on the image that indicates a port the image would like to expose
 EXPOSE	3306
 
 # Allows you to configure a container that will run as an executable
-ENTRYPOINT ["./mariadb_init.sh"]
+ENTRYPOINT ["./mariadb_conf.sh"]
 
 # Sets the default command a container using this image will run
 CMD ["mysqld_safe", "--basedir=/usr", "--datadir=/var/lib/mysql", "--user=mysql"]

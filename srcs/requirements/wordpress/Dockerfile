@@ -19,15 +19,14 @@ RUN     apk add --no-cache ${PHP_VERSION}-fpm \
 	fcgi
 
 # Copy files from the host and put them into the container image
-#COPY	--chmod=755 ./conf/wordpress_init.sh /wordpress_init.sh
-COPY	--chmod=755 ./conf/wordpress_conf.sh .
-COPY	--chmod=755 ./conf/wordpress_init.sh /
+COPY	--chmod=755 ./conf/wordpress_install.sh .
+COPY	--chmod=755 ./conf/wordpress_conf.sh /
 
 # Sets configuration on the image that indicates a port the image would like to expose
 EXPOSE	9000
 
 # Allows you to configure a container that will run as an executable
-ENTRYPOINT ["/wordpress_init.sh"]
+ENTRYPOINT ["/wordpress_conf.sh"]
 
 # Sets the default command a container using this image will run
 CMD ["php-fpm83", "-F"]
