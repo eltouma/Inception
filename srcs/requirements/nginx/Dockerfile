@@ -9,7 +9,6 @@ RUN	apk add --no-cache nginx
 
 # Copy files from the host and put them into the container image
 COPY	--chmod=644 ./conf/nginx.conf /etc/nginx/http.d/
-#COPY	--chmod=644 ./conf/index.html /var/lib/nginx/html
 COPY	--chmod=644 ../secrets/inception.crt ./etc/nginx/inception.crt
 COPY	--chmod=644 ../secrets/inception.key ./etc/nginx/inception.key
 

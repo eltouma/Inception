@@ -5,13 +5,6 @@ grey='\e[90m'
 magenta='\e[95m'
 reset='\e[0m'
 
-if [ -f .env ]; then
-	set -a
-	source ../../.env
-	set +a
-fi
-
-
 ./wordpress_install.sh
 
 if [ ! -f "/var/www/wp-config.php" ]; then

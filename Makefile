@@ -29,11 +29,12 @@ clean:
 	@echo ""
 	@docker network ls
 	@echo ""
-	@docker stop $$(docker ps -qa)
-	@docker rm $$(docker ps -qa)
-	@docker rmi -f $$(docker images -qa)
-	@docker volume rm srcs_mariadb srcs_wordpress
-	@docker network rm inception
+	@echo -e "$(BLUE)Removing containers$(RESET)"
+	@docker stop $$(docker ps -qa) || true
+	@docker rm $$(docker ps -qa) || true
+	@docker rmi -f $$(docker images -qa) || true
+	@docker volume rm srcs_mariadb srcs_wordpress || true
+	@docker network rm inception || true
 	@rm -rf ./srcs/.env ./srcs/requirements/nginx/secrets $(DATA_PATH)
 	@echo -e "$(BLUE)srcs/.env$(RESET) removed: $(GREEN) Success$(RESET)"
 	@echo -e "$(BLUE)srcs/requirements/nginx/secrets$(RESET) removed: $(GREEN) Success$(RESET)"
@@ -45,6 +46,7 @@ clean:
 	@docker volume ls
 	@echo ""
 	@docker network ls
+	@echo -e "Containers removed $(GREEN)successfully$(RESET)"
 
 down:
 	@docker compose -f ./srcs/docker-compose.yml stop
@@ -53,3 +55,6 @@ down:
 up:
 	@echo -e "$(BLUE)Restarting Containers$(RESET)"
 	@docker compose -f ./srcs/docker-compose.yml up
+
+fclean: clean
+	@docker system prune -af

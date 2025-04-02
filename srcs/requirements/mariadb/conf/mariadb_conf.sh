@@ -21,8 +21,10 @@ sleep 5
 
 mariadb -u root <<-EOSQL
 	DELETE FROM mysql.user WHERE User='';
+	DROP DATABASE IF EXISTS test;
 	CREATE DATABASE IF NOT EXISTS ${DB_NAME};
 	CREATE USER IF NOT EXISTS ${ROOT_USER}@'%' IDENTIFIED BY '${ROOT_PASSWORD}';
+	CREATE USER IF NOT EXISTS ${USER}@'%' IDENTIFIED BY '${USER_PASSWORD}';
 	GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO ${ROOT_USER}@'%'; 
 	FLUSH PRIVILEGES;
 EOSQL
@@ -32,6 +34,7 @@ echo -e "${blue}${ROOT_USER} created${reset}"
 echo -e "${green}Mariadb is ready!${reset}"
 
 mysqladmin shutdown -u root --password=${ROOT_PASSWORD}
+mariadb -e "DELETE FROM mysql.user WHERE User='root';"
 echo -e "${yellow}Shutdown temporary mariadb server${reset}"
 echo -e "${magenta}Exec command mariadb container will run${reset}"
 exec "$@"
