@@ -6,8 +6,8 @@ services:
         args:
           DB_PATH: ${DB_PATH}
           DB_NAME: ${DB_NAME}
-          DB_USER: ${DB_USER}
-          WP_PASSWORD: ${WP_PASSWORD}
+          ROOT_USER: ${ROOT_USER}
+          DB_PASSWORD: ${DB_PASSWORD}
           DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     container_name: mariadb
     image: mariadb:mariadb
@@ -47,7 +47,9 @@ services:
         context: requirements/wordpress
         args:
           DB_NAME: ${DB_NAME}
-          DB_USER: ${DB_USER}
+          ROOT_USER: ${ROOT_USER}
+          USER: ${USER}
+          USER_MAIL: ${USER_MAIL}
           WP_PASSWORD: ${WP_PASSWORD}
           DB_HOST: ${DB_HOST}
           DOMAIN_NAME: ${DOMAIN_NAME}

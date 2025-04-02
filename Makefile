@@ -1,6 +1,40 @@
+GREEN := \e[92m
+GRAY := \e[90m
+BLUE := \e[94m
+RESET := \e[0m
+
 NAME = inception
-WP_DATA = /home/${LOGIN}/data/wordpress
+DATA_PATH = /home/eltouma/
+WP_DATA = ${DATA_PATH}/data/wordpress
+MARIABD_DATA = ${DATA_PATH}/data/mariadb
 
 all:
-	@docker-compose -f ./srcs/docker-compose.yml up --build
-#all: up
+	@echo -e "$(GRAY)Copying ../.env into /srcs$(RESET)"
+	@cp ../.env srcs/.env
+	@echo -e "$(BLUE)../.env$(RESET) copied into /srcs: $(GREEN)Success$(RESET)\n"
+	@echo -e "$(GRAY)Copying ../secrets into /srcs/requirements/nginx/secrets$(RESET)"
+	@cp -r ../secrets ./srcs/requirements/nginx/secrets
+	@echo -e "$(BLUE)../secrets$(RESET) copied into /srcs/requirements/nginx/secrets: $(GREEN)Success$(RESET)"
+	@echo -e "\n$(GRAY)Creating repositories for persistent data$(RESET)"
+	@mkdir -p $(WP_DATA) $(MARIABD_DATA)
+	@echo -e "$(BLUE)Repositories for persistent data$(RESET) created: $(GREEN)Success$(RESET)\n"
+	docker compose -f ./srcs/docker-compose.yml up --build
+
+clean: 
+	@docker stop $$(docker ps -qa)
+	@docker rm $$(docker ps -qa)
+	@docker rmi -f $$(docker images -qa)
+	@docker volume rm $$(docker volume ls -q)
+	@docker network rm inception
+	@rm -rf /srcs/.env /srcs/requirements/nginx/secrets $(DATA_PATH)
+	@echo -e "$(BLUE)srcs/.env$(RESET) removed: $(GREEN) Success$(RESET)"
+	@echo -e "$(BLUE)srcs/requirements/nginx/secrets$(RESET) removed: $(GREEN) Success$(RESET)"
+	@echo -e "$(BLUE)Repositories for persistent data$(RESET) removed: $(GREEN)Success$(RESET)\n"
+
+down:
+	@docker compose -f ./srcs/docker-compose.yml stop
+	@echo -e "Containers stopped $(GREEN)successfully$(RESET)"
+
+up:
+	@echo -e "$(BLUE)Restarting Containers$(RESET)"
+	@docker compose -f ./srcs/docker-compose.yml up
